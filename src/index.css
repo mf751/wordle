@@ -1,18 +1,57 @@
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #13141c;
-  font-family: "Rubik Mono One", monospace;
-  font-weight: 400;
-  font-style: normal;
+    margin: 0;
+    padding: 0;
+    background-color: #13141c;
+    font-family: "Rubik Mono One", monospace;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .main {
-  height: 100dvh;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
+    height: 100dvh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.board .row {
+    display: flex;
+    gap: 8px;
+}
+
+.board .row .item {
+    background-color: #303436;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    font-size: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board .row .item.correct {
+    background-color: #55b725;
+}
+
+.board .row .item.missplaced {
+    background-color: #dac316;
+}
+.board .row .item.wrong {
+    background-color: #707070;
+}
+
+.board .row .item p {
+    font-weight: 200;
+    padding: 0;
+    margin: 0;
 }

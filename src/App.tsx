@@ -10,6 +10,7 @@ import {
 } from "./utils";
 import { ToastContainer } from "react-toastify";
 import Keyboard from "./components/keyboard";
+import ReactConfetti from "react-confetti";
 
 const createInitialState = (): GameState => {
     return {
@@ -28,6 +29,7 @@ const createInitialState = (): GameState => {
         word: "",
         position: { row: 0, col: 0 } as Position,
         isFinsihed: false,
+        won: false,
     };
 };
 
@@ -61,11 +63,28 @@ export default function App() {
         })();
     }, []);
 
+    const restart = async () => {
+        const state = createInitialState();
+        state.word = await getRandomWord();
+        stateRef.current = state;
+        setGameState(state);
+    };
+
     return (
         <div className="main">
             <ToastContainer />
+            {gameState.won && <ReactConfetti />}
             <header>
                 <h1>Wordle</h1>
+                <button
+                    className="new"
+                    onClick={(e) => {
+                        e.currentTarget.blur();
+                        restart();
+                    }}
+                >
+                    New Word?
+                </button>
             </header>
             {gameState && (
                 <Board state={gameState!} updateState={setGameState} />

@@ -115,22 +115,18 @@ const checkAttempt = async (
     const attemptArr = state.attempts[row].attempt;
     const word = attemptArr.map((e) => e.value).join("");
 
-    // validate word
     if (!(await checkWordExists(word))) {
-        toast("Not A Word", { position: "top-center" });
+        toast.error("Not A Word", { position: "top-center" });
         return;
     }
 
-    // --- Correct Wordle logic (handles duplicates properly) ---
     const result: Entry[] = new Array(5);
     const targetCount: Record<string, number> = {};
 
-    // count letters in target
     for (let ch of target) {
         targetCount[ch] = (targetCount[ch] || 0) + 1;
     }
 
-    // first pass: RIGHT_IN_PLACE
     for (let i = 0; i < 5; i++) {
         const val = attemptArr[i].value;
 
@@ -140,7 +136,6 @@ const checkAttempt = async (
         }
     }
 
-    // second pass: RIGHT_OFF_PLACE / WRONG
     for (let i = 0; i < 5; i++) {
         if (result[i]) continue;
 
@@ -154,22 +149,19 @@ const checkAttempt = async (
         }
     }
 
-    // update attempts
     const newAttempts = state.attempts.map((att, idx) =>
         idx === row ? { attempt: result } : att,
     );
 
-    // --- WIN CONDITION ---
     const isWin = word === target;
 
-    // --- LOSE CONDITION ---
     const isLastRow = row === state.attempts.length - 1;
     const isLose = !isWin && isLastRow;
 
     if (isWin) {
-        toast("You Win!", { position: "top-center" });
+        toast.success("You Win!", { position: "top-center" });
     } else if (isLose) {
-        toast(`You Lose! Word was ${target}`, { position: "top-center" });
+        toast.error(`You Lose! Word was ${target}`, { position: "top-center" });
     }
 
     updateState({
@@ -177,6 +169,7 @@ const checkAttempt = async (
         attempts: newAttempts,
         isFinsihed: isWin || isLose,
         position: isWin || isLose ? state.position : { row: row + 1, col: 0 },
+        won: isWin,
     });
 };
 

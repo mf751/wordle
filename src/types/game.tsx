@@ -23,4 +23,5 @@ export type GameState = {
     attempts: Attempt[];
     position: Position;
     isFinsihed: boolean;
+    won: boolean;
 };

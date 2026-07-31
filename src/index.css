@@ -17,6 +17,17 @@ body {
     color: white;
 }
 
+.new {
+    background-color: #55b725;
+    border: none;
+    color: white;
+    padding: 4px 16px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    margin-bottom: 32px;
+}
+
 @media (max-width: 660px) {
     .main {
         justify-content: flex-start;

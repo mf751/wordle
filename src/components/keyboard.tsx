@@ -15,19 +15,23 @@ export default function Keyboard({
 }) {
     const keystates: Record<string, EntryState> = {};
 
-    state.attempts.forEach((att) => {
-        att.attempt.forEach((e: Entry) => {
-            if (keystates[e.value]) {
-                const v = keystates[e.value];
-                if (v !== "RIGHT_IN_PLACE") {
-                    if (v === "WRONG") keystates[e.value] = e.state;
-                    if (v === "RIGHT_OFF_PLACE" && e.state === "RIGHT_IN_PLACE")
-                        keystates[e.value] = e.state;
+    state.attempts.forEach((att, rdx) => {
+        if (rdx < state.position.row)
+            att.attempt.forEach((e: Entry) => {
+                if (keystates[e.value]) {
+                    const v = keystates[e.value];
+                    if (v !== "RIGHT_IN_PLACE") {
+                        if (v === "WRONG") keystates[e.value] = e.state;
+                        if (
+                            v === "RIGHT_OFF_PLACE" &&
+                            e.state === "RIGHT_IN_PLACE"
+                        )
+                            keystates[e.value] = e.state;
+                    }
+                } else {
+                    keystates[e.value] = e.state;
                 }
-            } else {
-                keystates[e.value] = e.state;
-            }
-        });
+            });
     });
 
     return (

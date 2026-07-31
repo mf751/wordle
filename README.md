@@ -8,11 +8,15 @@ A beautiful, fully functional **Wordle clone** built with **React + TypeScript +
 
 ---
 
+**[🎮 Play Live Demo](https://mf751.github.io/wordle)**
+
+---
+
 ## ✨ Preview
 
 **Before** → **After (Solved!)**
 
-![Wordle Gameplay Preview](https://github.com/user-attachments/assets/combined-wordle-preview.png)
+![Wordle Gameplay Preview](https://github.com/mf751/wordle/preview.png)
 
 *(Side-by-side view of gameplay — from early guesses to victory with confetti!)*
 

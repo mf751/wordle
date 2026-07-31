@@ -30,19 +30,24 @@ body {
 
 @media (max-width: 660px) {
     .main {
-        justify-content: flex-start;
-        gap: 50px;
+        justify-content: space-between;
     }
     .board .row .item {
         width: 50px !important;
         height: 50px !important;
     }
+
+    .keyboard {
+        margin-bottom: 64px;
+    }
     .keyboard .row {
+        margin-top: 4px;
         gap: 6px !important;
     }
     .keyboard .row .item {
         font-size: 14px !important;
         min-width: 32px !important;
+        min-height: 48px;
     }
 }
 

@@ -17,6 +17,24 @@ body {
     color: white;
 }
 
+@media (max-width: 660px) {
+    .main {
+        justify-content: flex-start;
+        gap: 50px;
+    }
+    .board .row .item {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    .keyboard .row {
+        gap: 6px !important;
+    }
+    .keyboard .row .item {
+        font-size: 14px !important;
+        min-width: 32px !important;
+    }
+}
+
 .board {
     display: flex;
     flex-direction: column;
@@ -39,19 +57,47 @@ body {
     align-items: center;
 }
 
-.board .row .item.correct {
-    background-color: #55b725;
+.row .item.correct {
+    background-color: #55b725 !important;
 }
 
-.board .row .item.missplaced {
-    background-color: #dac316;
+.row .item.missplaced {
+    background-color: #dac316 !important;
 }
-.board .row .item.wrong {
-    background-color: #707070;
+.row .item.wrong {
+    background-color: #707070 !important;
 }
 
 .board .row .item p {
     font-weight: 200;
     padding: 0;
     margin: 0;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 32px;
+}
+
+.keyboard .row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.keyboard .row .item {
+    padding: 12px;
+    min-width: 48px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    background-color: #303436;
+    font-family: "Rubik Mono One", monospace;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
 }

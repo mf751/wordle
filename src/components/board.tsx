@@ -9,24 +9,6 @@ export default function Board({
     state: GameState;
     updateState: React.Dispatch<React.SetStateAction<GameState>>;
 }) {
-    const stateRef = useRef<GameState>(state);
-
-    useEffect(() => {
-        stateRef.current = state;
-    }, [state]);
-
-    const handleKey = (key: string) => {
-        if (key === "Enter") {
-            checkAttempt(stateRef.current, updateState);
-        } else if (key === "Backspace") {
-            popEntry(updateState);
-        } else {
-            appendEntry(key, updateState);
-        }
-    };
-
-    useWordleInput(handleKey);
-
     return (
         <div className="board">
             {state.attempts.map((row, idx) => (

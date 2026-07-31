@@ -3,7 +3,7 @@ import type { Attempt, Entry, GameState } from "./types/game";
 import { toast } from "react-toastify";
 
 const getRandomWord = async (): Promise<string> => {
-    const res = await (await fetch("/data/main_words.txt")).text();
+    const res = await (await fetch("/wordle/data/main_words.txt")).text();
     const words = res
         .split("\n")
         .map((word) => word.trim())
@@ -14,7 +14,7 @@ const getRandomWord = async (): Promise<string> => {
 };
 
 const checkWordExists = async (word: string): Promise<boolean> => {
-    const res = await (await fetch("/data/all_words.txt")).text();
+    const res = await (await fetch("/wordle/data/all_words.txt")).text();
     const words = res
         .split("\n")
         .map((word) => word.trim())

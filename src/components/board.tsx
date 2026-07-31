@@ -1,5 +1,6 @@
-import type { Entry, GameState } from "../types/game";
-import { appendEntry, useWordleInput } from "../utils";
+import React, { useEffect, useRef } from "react";
+import type { GameState } from "../types/game";
+import { appendEntry, checkAttempt, popEntry, useWordleInput } from "../utils";
 
 export default function Board({
     state,
@@ -8,12 +9,17 @@ export default function Board({
     state: GameState;
     updateState: React.Dispatch<React.SetStateAction<GameState>>;
 }) {
-    console.log(state);
+    const stateRef = useRef<GameState>(state);
+
+    useEffect(() => {
+        stateRef.current = state;
+    }, [state]);
+
     const handleKey = (key: string) => {
         if (key === "Enter") {
-            console.log("Enter");
+            checkAttempt(stateRef.current, updateState);
         } else if (key === "Backspace") {
-            console.log("Delete");
+            popEntry(updateState);
         } else {
             appendEntry(key, updateState);
         }

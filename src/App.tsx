@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Board from "./components/board";
 import type { GameState, Attempt, Entry, Position } from "./types/game";
 import { getRandomWord } from "./utils";
+import { ToastContainer } from "react-toastify";
 
 const createInitialState = (): GameState => {
     return {
@@ -37,6 +38,7 @@ export default function App() {
 
     return (
         <div className="main">
+            <ToastContainer />
             <header>
                 <h1>Wordle</h1>
             </header>

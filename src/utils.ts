@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import type { Attempt, Entry, GameState } from "./types/game";
+import { toast } from "react-toastify";
 
 const getRandomWord = async (): Promise<string> => {
     const res = await (await fetch("/src/data/main_words.txt")).text();
@@ -50,6 +51,7 @@ const appendEntry = (
     updateState: React.Dispatch<React.SetStateAction<GameState>>,
 ) => {
     updateState((state: GameState) => {
+        if (state.isFinsihed) return state;
         const newAttempts = state.attempts.map((att: Attempt, rdx: number) => {
             if (rdx != state.position.row) return att;
             return {
@@ -64,10 +66,11 @@ const appendEntry = (
             };
         });
 
-        const newPosition = {
-            ...state.position,
-            col: state.position.col + 1,
-        };
+        let newPosition = state.position;
+
+        if (state.position.col < 5) {
+            newPosition = { ...state.position, col: state.position.col + 1 };
+        }
 
         return {
             ...state,
@@ -77,4 +80,111 @@ const appendEntry = (
     });
 };
 
-export { getRandomWord, checkWordExists, useWordleInput, appendEntry };
+const popEntry = (
+    updateState: React.Dispatch<React.SetStateAction<GameState>>,
+) => {
+    updateState((state: GameState) => {
+        if (state.isFinsihed) return state;
+        if (state.position.col < 1) return state;
+        const newAttempts = state.attempts.map((att, rdx) => {
+            if (rdx !== state.position.row) return att;
+            return {
+                attempt: att.attempt.map((e, cdx) => {
+                    if (cdx !== state.position.col - 1) return e;
+                    return { value: "", state: "INACTIVE" } as Entry;
+                }),
+            };
+        });
+        return {
+            ...state,
+            position: { ...state.position, col: state.position.col - 1 },
+            attempts: newAttempts,
+        };
+    });
+};
+
+const checkAttempt = async (
+    state: GameState,
+    updateState: React.Dispatch<React.SetStateAction<GameState>>,
+) => {
+    if (state.isFinsihed) return;
+    if (state.position.col !== 5) return;
+
+    const row = state.position.row;
+    const target = state.word;
+    const attemptArr = state.attempts[row].attempt;
+    const word = attemptArr.map((e) => e.value).join("");
+
+    // validate word
+    if (!(await checkWordExists(word))) {
+        toast("Not A Word", { position: "top-center" });
+        return;
+    }
+
+    // --- Correct Wordle logic (handles duplicates properly) ---
+    const result: Entry[] = new Array(5);
+    const targetCount: Record<string, number> = {};
+
+    // count letters in target
+    for (let ch of target) {
+        targetCount[ch] = (targetCount[ch] || 0) + 1;
+    }
+
+    // first pass: RIGHT_IN_PLACE
+    for (let i = 0; i < 5; i++) {
+        const val = attemptArr[i].value;
+
+        if (val === target[i]) {
+            result[i] = { ...attemptArr[i], state: "RIGHT_IN_PLACE" };
+            targetCount[val]--;
+        }
+    }
+
+    // second pass: RIGHT_OFF_PLACE / WRONG
+    for (let i = 0; i < 5; i++) {
+        if (result[i]) continue;
+
+        const val = attemptArr[i].value;
+
+        if (targetCount[val] > 0) {
+            result[i] = { ...attemptArr[i], state: "RIGHT_OFF_PLACE" };
+            targetCount[val]--;
+        } else {
+            result[i] = { ...attemptArr[i], state: "WRONG" };
+        }
+    }
+
+    // update attempts
+    const newAttempts = state.attempts.map((att, idx) =>
+        idx === row ? { attempt: result } : att,
+    );
+
+    // --- WIN CONDITION ---
+    const isWin = word === target;
+
+    // --- LOSE CONDITION ---
+    const isLastRow = row === state.attempts.length - 1;
+    const isLose = !isWin && isLastRow;
+
+    if (isWin) {
+        toast("You Win!", { position: "top-center" });
+    } else if (isLose) {
+        toast(`You Lose! Word was ${target}`, { position: "top-center" });
+    }
+
+    updateState({
+        ...state,
+        attempts: newAttempts,
+        isFinsihed: isWin || isLose,
+        position: isWin || isLose ? state.position : { row: row + 1, col: 0 },
+    });
+};
+
+export {
+    getRandomWord,
+    checkWordExists,
+    useWordleInput,
+    appendEntry,
+    popEntry,
+    checkAttempt,
+};

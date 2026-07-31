@@ -16,7 +16,7 @@ A beautiful, fully functional **Wordle clone** built with **React + TypeScript +
 
 **Before** → **After (Solved!)**
 
-![Wordle Gameplay Preview](https://github.com/mf751/wordle/preview.png)
+![Wordle Gameplay Preview](https://github.com/mf751/wordle/blob/main/preview.png)
 
 *(Side-by-side view of gameplay — from early guesses to victory with confetti!)*
 

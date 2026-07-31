@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import type { Attempt, Entry, GameState } from "./types/game";
 import { toast } from "react-toastify";
 

@@ -1,14 +1,6 @@
-import React, { useEffect, useRef } from "react";
 import type { GameState } from "../types/game";
-import { appendEntry, checkAttempt, popEntry, useWordleInput } from "../utils";
 
-export default function Board({
-    state,
-    updateState,
-}: {
-    state: GameState;
-    updateState: React.Dispatch<React.SetStateAction<GameState>>;
-}) {
+export default function Board({ state }: { state: GameState }) {
     return (
         <div className="board">
             {state.attempts.map((row, idx) => (

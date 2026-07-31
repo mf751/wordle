@@ -86,9 +86,7 @@ export default function App() {
                     New Word?
                 </button>
             </header>
-            {gameState && (
-                <Board state={gameState!} updateState={setGameState} />
-            )}
+            {gameState && <Board state={gameState!} />}
             <Keyboard onKey={(key) => handleKey(key)} state={gameState!} />
         </div>
     );
